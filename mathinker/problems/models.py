@@ -24,11 +24,9 @@ class Problem(models.Model):
                                    related_name="problems")
     created_at = models.DateTimeField(auto_now_add=True)
     likes = models.ManyToManyField(User,
-                                   on_delete=models.CASCADE,
-                                   related_name="like")
+                                   related_name="liked_problems")
     dislike = models.ManyToManyField(User,
-                                     on_delete=models.CASCADE,
-                                     related_name="dislike")
+                                     related_name="disliked_problems")
 
     def __str__(self):
         return self.title
@@ -47,11 +45,9 @@ class Comment(models.Model):
     text = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
     likes = models.ManyToManyField(User,
-                                   on_delete=models.CASCADE,
-                                   related_name="like")
+                                   related_name="liked_comments")
     dislike = models.ManyToManyField(User,
-                                     on_delete=models.CASCADE,
-                                     related_name="dislike")
+                                     related_name="disliked_comments")
 
     def __str__(self):
         return f"{self.user} - {self.problem}"
