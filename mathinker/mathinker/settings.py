@@ -21,7 +21,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
-    "debug_toolbar",
+    "debug_toolbar",  # https://django-debug-toolbar.readthedocs.io/en/latest/
 
     'problems',
     'accounts',
