@@ -13,26 +13,32 @@ class Tag(models.Model):
 class Theme(models.Model):
     name = models.CharField(max_length=80, unique=True)
     slug = models.SlugField(max_length=80)
+
     # image = models.ImageField()  # todo add image for each theme?
 
     class Meta:
         ordering = ["name", ]
 
     def __str__(self):
-        return self.na
+        return self.name
 
+
+class ProblemManager(models.Manager):
+    def get_queryset(self):
+        return super().get_queryset().filter(is_published=True)
 
 
 class Problem(models.Model):
     class DifficultyChoices(models.IntegerChoices):
-        EASY = 1
-        MEDIUM = 2
-        HARD = 3
+        EASY = 1, "Easy"
+        MEDIUM = 2, "Medium"
+        HARD = 3, "Hard"
 
-    theme = models.ForeignKey(Theme, related_name="problems", on_delete=models.PROTECT, unique=True)
+    theme = models.ForeignKey(Theme, related_name="problems", on_delete=models.PROTECT)
     title = models.CharField(max_length=80, unique=True)
     slug = models.SlugField(max_length=80, unique=True)
-    description = models.TextField()
+    is_published = models.BooleanField(default=True)
+    description = models.TextField(max_length=3000)
     tags = models.ManyToManyField(Tag, related_name="problems")
     difficulty = models.CharField(max_length=1, choices=DifficultyChoices)
     created_by = models.ForeignKey(User,
@@ -47,11 +53,18 @@ class Problem(models.Model):
     dislike = models.ManyToManyField(User,
                                      related_name="disliked_problems")
 
+    published_objects = ProblemManager()
+
     class Meta:
         ordering = ["difficulty", ]
 
     def __str__(self):
         return self.title
+
+    def total_likes(self):
+        return self.likes.count()
+
+    # def get_absolut_url(self):  # todo
 
 
 class Comment(models.Model):
@@ -67,6 +80,11 @@ class Comment(models.Model):
                                    related_name="liked_comments")
     dislike = models.ManyToManyField(User,
                                      related_name="disliked_comments")
+    replay = models.ForeignKey("self",
+                               on_delete=models.CASCADE,
+                               related_name="replay_comments",
+                               blank=True,
+                               null=True)
 
     class Meta:
         ordering = ["created_at", ]
