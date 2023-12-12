@@ -2,6 +2,8 @@ from django.contrib.auth.models import User  # todo mb create custom user model?
 from django.utils import timezone
 from django.db import models
 
+from taggit.managers import TaggableManager
+
 
 class Tag(models.Model):
     name = models.CharField(max_length=20, unique=True)
@@ -39,7 +41,6 @@ class Problem(models.Model):
     slug = models.SlugField(max_length=80, unique=True)
     is_published = models.BooleanField(default=True)
     description = models.TextField(max_length=3000)
-    tags = models.ManyToManyField(Tag, related_name="problems")
     difficulty = models.CharField(max_length=1, choices=DifficultyChoices)
     created_by = models.ForeignKey(User,
                                    on_delete=models.SET_NULL,
@@ -53,10 +54,13 @@ class Problem(models.Model):
     dislike = models.ManyToManyField(User,
                                      related_name="disliked_problems")
 
+    tags = TaggableManager(related_name="problems")
+
+    objects = models.Manager()
     published_objects = ProblemManager()
 
     class Meta:
-        ordering = ["difficulty", ]
+        ordering = ["difficulty", "-pk"]
 
     def __str__(self):
         return self.title
@@ -77,9 +81,11 @@ class Comment(models.Model):
     text = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
     likes = models.ManyToManyField(User,
-                                   related_name="liked_comments")
+                                   related_name="liked_comments",
+                                   blank=True)
     dislike = models.ManyToManyField(User,
-                                     related_name="disliked_comments")
+                                     related_name="disliked_comments",
+                                     blank=True)
     replay = models.ForeignKey("self",
                                on_delete=models.CASCADE,
                                related_name="replay_comments",
@@ -87,7 +93,7 @@ class Comment(models.Model):
                                null=True)
 
     class Meta:
-        ordering = ["created_at", ]
+        ordering = ["-created_at", ]
 
     def __str__(self):
         return f"{self.user} - {self.problem}"
