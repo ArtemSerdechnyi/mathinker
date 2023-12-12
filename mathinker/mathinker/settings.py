@@ -21,6 +21,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
+    "taggit",  # https://django-taggit.readthedocs.io/en/latest/getting_started.html
     "debug_toolbar",  # https://django-debug-toolbar.readthedocs.io/en/latest/
 
     'problems',
@@ -112,3 +113,6 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 INTERNAL_IPS = [
     "127.0.0.1",
 ]
+
+#tagging
+TAGGIT_CASE_INSENSITIVE = True
