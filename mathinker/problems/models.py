@@ -5,13 +5,6 @@ from django.db import models
 from taggit.managers import TaggableManager
 
 
-class Tag(models.Model):
-    name = models.CharField(max_length=20, unique=True)
-
-    def __str__(self):
-        return self.name
-
-
 class Theme(models.Model):
     name = models.CharField(max_length=80, unique=True)
     slug = models.SlugField(max_length=80)
