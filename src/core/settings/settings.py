@@ -1,7 +1,7 @@
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
-BASE_DIR = Path(__file__).resolve().parent.parent
+BASE_DIR = Path(__file__).resolve().parent.parent.parent
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'django-insecure-deqzx%3y1+&-xnsm85))_&#u#@&sno8ul=bnng$jv%$0(wo)!f'
@@ -24,8 +24,8 @@ INSTALLED_APPS = [
     "taggit",  # https://django-taggit.readthedocs.io/en/latest/getting_started.html
     "debug_toolbar",  # https://django-debug-toolbar.readthedocs.io/en/latest/
 
-    'problems',
-    'accounts',
+    # 'problems',
+    # 'accounts',
 ]
 
 MIDDLEWARE = [
@@ -40,7 +40,7 @@ MIDDLEWARE = [
     'debug_toolbar.middleware.DebugToolbarMiddleware',  # Django Debug Toolbar
 ]
 
-ROOT_URLCONF = 'mathinker.urls'
+ROOT_URLCONF = 'core.urls'
 
 TEMPLATES = [
     {
@@ -58,7 +58,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'mathinker.wsgi.application'
+WSGI_APPLICATION = 'core.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
